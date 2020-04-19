@@ -13,13 +13,15 @@ public class EditorSnap : MonoBehaviour
     void Update()
     {
         SnapPosition();
-        UpdateLabel();
+        UpdateLabelAndName();
     }
 
-    private void UpdateLabel()
+    private void UpdateLabelAndName()
     {
         textMesh = GetComponentInChildren<TextMesh>();
-        textMesh.text = transform.position.x/gridSize + "," + transform.position.z/gridSize;
+        string labelText = transform.position.x / gridSize + "," + transform.position.z / gridSize;
+        textMesh.text = labelText;
+        gameObject.name = "Cube " + labelText;
     }
 
     private void SnapPosition()
