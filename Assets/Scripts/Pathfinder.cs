@@ -6,8 +6,7 @@ using UnityEngine;
 public class Pathfinder : MonoBehaviour
 {
     Dictionary<Vector2Int, Waypoint> grid = new Dictionary<Vector2Int, Waypoint>();
-    [SerializeField] GameObject startPosition = null;
-    [SerializeField] GameObject endPosition = null;
+    [SerializeField] GameObject startPosition = null, endPosition = null;
 
     // Start is called before the first frame update
     void Start()

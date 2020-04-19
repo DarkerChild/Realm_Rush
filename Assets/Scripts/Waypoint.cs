@@ -10,8 +10,8 @@ public class Waypoint : MonoBehaviour
     public Vector2Int GetGridPosition()
     {
         return new Vector2Int(
-            Mathf.RoundToInt(transform.position.x / gridSize) * gridSize,
-            Mathf.RoundToInt(transform.position.z / gridSize) * gridSize
+            Mathf.RoundToInt(transform.position.x / gridSize),
+            Mathf.RoundToInt(transform.position.z / gridSize)
             );
     }
 
@@ -23,6 +23,8 @@ public class Waypoint : MonoBehaviour
     public void SetTopColor(Color newColor)
     {
         MeshRenderer topMeshRenderer = transform.Find("Top").GetComponent<MeshRenderer>();
-        topMeshRenderer.material.color = newColor;
+        Material newMaterial = new Material(topMeshRenderer.sharedMaterial);
+        newMaterial.color = newColor;
+        topMeshRenderer.material = newMaterial;
     }
 }
