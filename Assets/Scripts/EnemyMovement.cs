@@ -11,7 +11,7 @@ public class EnemyMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(FollowPath(waitTime));
+        //StartCoroutine(FollowPath(waitTime));
     }
 
     IEnumerator FollowPath(float waitTime)
