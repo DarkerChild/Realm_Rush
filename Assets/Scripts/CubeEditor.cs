@@ -10,16 +10,11 @@ public class CubeEditor : MonoBehaviour
 {
     Waypoint waypoint;
 
-    [SerializeField] Color startColor = Color.cyan;
-    [SerializeField] Color endColor = Color.magenta;
-    [SerializeField] Color normalColor = Color.green;
-
     void Update()
     {
         GetWaypoint();
         SnapToGrid();
         UpdateLabelAndName();
-        SetStartAndEndColor();
     }
 
     private void GetWaypoint()
@@ -53,22 +48,5 @@ public class CubeEditor : MonoBehaviour
             + waypoint.GetGridPosition().y;
         textMesh.text = labelText;
         gameObject.name = labelText;
-    }
-
-    private void SetStartAndEndColor()
-    {
-        Pathfinder pathfinder = FindObjectOfType<Pathfinder>();
-
-        Waypoint startWaypoint = pathfinder.GetStartWaypoint();
-        Waypoint endWaypoint = pathfinder.GetEndWaypoint();
-
-        startWaypoint.SetTopColor(startColor);
-        endWaypoint.SetTopColor(endColor);
-        
-        if (waypoint != startWaypoint && waypoint != endWaypoint)
-        {
-            waypoint.SetTopColor(normalColor);
-        }
-        
     }
 }
