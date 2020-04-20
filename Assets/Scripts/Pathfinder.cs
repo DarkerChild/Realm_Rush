@@ -6,16 +6,32 @@ using UnityEngine;
 public class Pathfinder : MonoBehaviour
 {
     Dictionary<Vector2Int, Waypoint> grid = new Dictionary<Vector2Int, Waypoint>();
-    [SerializeField] GameObject startPosition = null, endPosition = null;
+    Queue<Waypoint> queue = new Queue<Waypoint>();
 
-    // Start is called before the first frame update
+    [SerializeField]  Waypoint startWaypoint = null, endWaypoint = null;
+
+    List<Waypoint> path = new List<Waypoint>();
+
+    Vector2Int[] directions = {
+        Vector2Int.up,
+        Vector2Int.right,
+        Vector2Int.down,
+        Vector2Int.left
+    };
+
+    bool isRunning = true;
+
+    Waypoint searchCentre;
+
+    
     void Start()
     {
-        LoadBlocks();
+        
     }
 
     private void LoadBlocks()
     {
+        grid.Clear();
         Waypoint[] waypoints = FindObjectsOfType<Waypoint>();
         foreach (Waypoint waypoint in waypoints)
         {
@@ -23,21 +39,84 @@ public class Pathfinder : MonoBehaviour
 
             if (grid.ContainsKey(gridPos))
             {
-                Debug.LogWarning("Overlapping block at " + gridPos / waypoint.GetGridSize());
+                Debug.LogWarning("Overlapping block at " + gridPos);
             }
             else
             {
                 grid.Add(gridPos, waypoint);
             }
-            
         }
     }
 
-    public GameObject[] GetStartAndEndObjects()
+    public void PopulateExploredFrom()
     {
-        GameObject[] gameObjects = new GameObject[2];
-        gameObjects[0] = startPosition;
-        gameObjects[1] = endPosition;
-        return gameObjects;
+        queue.Enqueue(startWaypoint);
+
+        while (queue.Count > 0 && isRunning)
+        {
+            searchCentre = queue.Dequeue();
+            HaltIfEndFound();
+            ExploreNeighbours();
+            searchCentre.isExplored = true;
+        }
+    }
+
+    private void HaltIfEndFound()
+    {
+        if (searchCentre == endWaypoint)
+        {
+            isRunning = false;
+        }
+    }
+
+    private void ExploreNeighbours()
+    {
+        if (!isRunning) { return;  } //Only epxlore neighbours if pathfinding is still running.
+
+        foreach (Vector2Int direction in directions)
+        {
+            Vector2Int neighbourPosition = searchCentre.GetGridPosition() + direction;
+            if (grid.ContainsKey(neighbourPosition))
+            {
+                QueueNewNeighbours(neighbourPosition);
+            }
+        }
+    }
+
+    private void QueueNewNeighbours(Vector2Int targetPosition)
+    {
+        Waypoint neighbour = grid[targetPosition];
+        if (!(neighbour.isExplored || queue.Contains(neighbour)))
+        {
+            queue.Enqueue(neighbour);
+            neighbour.exploredFrom = searchCentre;
+        }
+    }
+
+    public Waypoint GetStartWaypoint()
+    {
+        return startWaypoint;
+    }
+
+    public Waypoint GetEndWaypoint()
+    {
+        return endWaypoint;
+    }
+
+    public List<Waypoint> GetPath()
+    {
+        LoadBlocks();
+        PopulateExploredFrom();
+        path.Clear();
+        Waypoint nextWaypoint = endWaypoint;
+
+        while (nextWaypoint != startWaypoint)
+        {
+            path.Add(nextWaypoint);
+            nextWaypoint = nextWaypoint.exploredFrom;
+        }
+        path.Reverse();
+
+        return path;
     }
 }

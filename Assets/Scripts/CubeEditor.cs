@@ -12,6 +12,7 @@ public class CubeEditor : MonoBehaviour
 
     [SerializeField] Color startColor = Color.cyan;
     [SerializeField] Color endColor = Color.magenta;
+    [SerializeField] Color normalColor = Color.green;
 
     void Update()
     {
@@ -58,18 +59,16 @@ public class CubeEditor : MonoBehaviour
     {
         Pathfinder pathfinder = FindObjectOfType<Pathfinder>();
 
-        GameObject[] gameobjects = pathfinder.GetStartAndEndObjects();
-        if (waypoint.gameObject == gameobjects[0])
+        Waypoint startWaypoint = pathfinder.GetStartWaypoint();
+        Waypoint endWaypoint = pathfinder.GetEndWaypoint();
+
+        startWaypoint.SetTopColor(startColor);
+        endWaypoint.SetTopColor(endColor);
+        
+        if (waypoint != startWaypoint && waypoint != endWaypoint)
         {
-            waypoint.SetTopColor(Color.cyan);
+            waypoint.SetTopColor(normalColor);
         }
-        else if (waypoint.gameObject == gameobjects[1])
-        {
-            waypoint.SetTopColor(Color.magenta);
-        }
-        else
-        {
-            waypoint.SetTopColor(Color.green);
-        }
+        
     }
 }

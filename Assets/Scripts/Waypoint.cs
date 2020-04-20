@@ -7,6 +7,9 @@ public class Waypoint : MonoBehaviour
     const int gridSize = 10;
     Vector2Int gridPos;
 
+    public bool isExplored = false;
+    public Waypoint exploredFrom = null;
+
     public Vector2Int GetGridPosition()
     {
         return new Vector2Int(
@@ -24,7 +27,10 @@ public class Waypoint : MonoBehaviour
     {
         MeshRenderer topMeshRenderer = transform.Find("Top").GetComponent<MeshRenderer>();
         Material newMaterial = new Material(topMeshRenderer.sharedMaterial);
-        newMaterial.color = newColor;
-        topMeshRenderer.material = newMaterial;
+        if (newMaterial.color != newColor)
+        {
+            newMaterial.color = newColor;
+            topMeshRenderer.material = newMaterial;
+        }
     }
 }

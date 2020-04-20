@@ -4,25 +4,36 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField] List<Waypoint> path = null;
-    //[SerializeField] float waitTime = 1f;
+    [SerializeField] float waitTime = 1f;
+
+    
+    Waypoint startWaypoint;
+    Waypoint endWaypoint;
+    Waypoint currentWaypoint;
+
+    Pathfinder pathfinder;
 
 
-    // Start is called before the first frame update
     void Start()
     {
-        //StartCoroutine(FollowPath(waitTime));
+        pathfinder = FindObjectOfType<Pathfinder>();
+        startWaypoint = pathfinder.GetStartWaypoint();
+        currentWaypoint = startWaypoint;
+        endWaypoint = pathfinder.GetEndWaypoint();
+        StartCoroutine(FollowPath(waitTime));
     }
 
     IEnumerator FollowPath(float waitTime)
     {
-        print("Starting Patrol");
-        foreach (Waypoint waypoint in path)
+        while (transform.position != endWaypoint.transform.position)
         {
-            print("Moving to position: " + waypoint.name);
-            transform.position = waypoint.transform.position;
-            yield return new WaitForSeconds(waitTime);
+            List<Waypoint> path = pathfinder.GetPath();
+
+            foreach (Waypoint nextWaypoint in path)
+            {
+                yield return new WaitForSeconds(waitTime);
+                transform.position = nextWaypoint.transform.position;
+            }
         }
-        print("Finished Partol");
     }
 }
