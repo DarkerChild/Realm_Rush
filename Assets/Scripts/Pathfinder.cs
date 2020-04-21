@@ -23,12 +23,6 @@ public class Pathfinder : MonoBehaviour
 
     Waypoint searchCentre;
 
-    
-    void Start()
-    {
-        
-    }
-
     private void LoadBlocks()
     {
         grid.Clear();
@@ -114,7 +108,7 @@ public class Pathfinder : MonoBehaviour
         {
             path.Add(nextWaypoint);
             nextWaypoint = nextWaypoint.exploredFrom;
-        }
+        }path.Add(startWaypoint);
         path.Reverse();
 
         return path;

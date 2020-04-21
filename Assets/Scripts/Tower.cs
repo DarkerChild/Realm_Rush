@@ -53,7 +53,6 @@ public class Tower : MonoBehaviour
     {
         hasTarget = true;
         Vector3 direction = targetEnemy.position - objectToPan.position;
-        print(direction);
         Quaternion toRotation = Quaternion.LookRotation(direction);
         objectToPan.rotation = Quaternion.Lerp(objectToPan.rotation, toRotation, Time.deltaTime * towerAimSpeed);
     }
