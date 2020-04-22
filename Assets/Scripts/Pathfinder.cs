@@ -23,6 +23,47 @@ public class Pathfinder : MonoBehaviour
 
     Waypoint searchCentre;
 
+    private void Start()
+    {
+        SetPath();
+    }
+
+    public Waypoint GetStartWaypoint()
+    {
+        return startWaypoint;
+    }
+
+    public Waypoint GetEndWaypoint()
+    {
+        return endWaypoint;
+    }
+
+    private void SetPath()
+    {
+        LoadBlocks();
+        PopulateExploredFrom();
+        CreatePath();
+    }
+
+    private void CreatePath()
+    {
+        path.Clear();
+        Waypoint nextWaypoint = endWaypoint;
+
+        while (nextWaypoint != startWaypoint)
+        {
+            path.Add(nextWaypoint);
+            nextWaypoint = nextWaypoint.exploredFrom;
+        }
+        path.Add(startWaypoint);
+        path.Reverse();
+    }
+
+    public List<Waypoint> GetPath()
+    {
+        return path;
+    }
+
     private void LoadBlocks()
     {
         grid.Clear();
@@ -85,32 +126,5 @@ public class Pathfinder : MonoBehaviour
             queue.Enqueue(neighbour);
             neighbour.exploredFrom = searchCentre;
         }
-    }
-
-    public Waypoint GetStartWaypoint()
-    {
-        return startWaypoint;
-    }
-
-    public Waypoint GetEndWaypoint()
-    {
-        return endWaypoint;
-    }
-
-    public List<Waypoint> GetPath()
-    {
-        LoadBlocks();
-        PopulateExploredFrom();
-        path.Clear();
-        Waypoint nextWaypoint = endWaypoint;
-
-        while (nextWaypoint != startWaypoint)
-        {
-            path.Add(nextWaypoint);
-            nextWaypoint = nextWaypoint.exploredFrom;
-        }path.Add(startWaypoint);
-        path.Reverse();
-
-        return path;
     }
 }

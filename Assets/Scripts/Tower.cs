@@ -1,17 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
 public class Tower : MonoBehaviour
 {
-
-    [SerializeField] Transform objectToPan = null;
-    [SerializeField] Transform targetEnemy = null;
-    [SerializeField] float targetDistance = 300f;
-    [SerializeField] float towerAimSpeed = 1f;
+    [SerializeField] float targetDistance = 30f;
+    [SerializeField] float towerAimSpeed = 5f;
 
     private bool hasTarget;
+    float distToClosestEnemy;
+    Transform targetEnemy;
+    Transform objectToPan;
 
     private void Start()
     {
@@ -20,7 +21,23 @@ public class Tower : MonoBehaviour
 
     void LateUpdate()
     {
+        FindClosestEnemy();
         TargetEnemy();
+    }
+
+    private void FindClosestEnemy()
+    {
+        EnemyMovement[] enemies = FindObjectsOfType<EnemyMovement>();
+        distToClosestEnemy = 0f;
+        foreach (EnemyMovement enemy in enemies)
+        {
+            float distToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distToClosestEnemy == 0f || distToEnemy<distToClosestEnemy)
+            {
+                targetEnemy = enemy.transform;
+                distToClosestEnemy = distToEnemy;
+            }
+        }
     }
 
     private void TargetEnemy()
