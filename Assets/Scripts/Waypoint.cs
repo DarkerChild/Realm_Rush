@@ -9,6 +9,7 @@ public class Waypoint : MonoBehaviour
 
     public bool isExplored = false;
     public Waypoint exploredFrom = null;
+    public bool isPlaceable = true;
 
     public Vector2Int GetGridPosition()
     {
@@ -23,14 +24,11 @@ public class Waypoint : MonoBehaviour
         return gridSize;
     }
 
-    public void SetTopColor(Color newColor)
+    private void OnMouseOver()
     {
-        MeshRenderer topMeshRenderer = transform.Find("Top").GetComponent<MeshRenderer>();
-        Material newMaterial = new Material(topMeshRenderer.sharedMaterial);
-        if (newMaterial.color != newColor)
+        if (Input.GetMouseButtonDown(0))
         {
-            newMaterial.color = newColor;
-            topMeshRenderer.material = newMaterial;
+            print(gameObject.name + " - Clicked");
         }
     }
 }
