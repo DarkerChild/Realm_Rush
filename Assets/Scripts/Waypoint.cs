@@ -4,12 +4,24 @@ using UnityEngine;
 
 public class Waypoint : MonoBehaviour
 {
-    const int gridSize = 10;
-    Vector2Int gridPos;
-
     public bool isExplored = false;
     public Waypoint exploredFrom = null;
     public bool isPlaceable = true;
+
+
+    Vector2Int gridPos;
+    Vector3 towerSpawnPosition;
+    Tower tower1;
+    TowersController towerController;
+
+    const int gridSize = 10;
+
+    private void Start()
+    {
+        towerSpawnPosition = transform.position + (Vector3.up * 2);
+        towerController = FindObjectOfType<TowersController>();
+        tower1 = towerController.GetTower1();
+    }
 
     public Vector2Int GetGridPosition()
     {
@@ -28,7 +40,15 @@ public class Waypoint : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            print(gameObject.name + " - Clicked");
+            if (isPlaceable)
+            {
+                Instantiate(tower1, towerSpawnPosition, Quaternion.identity,towerController.transform);
+                isPlaceable = false;
+            }
+            else
+            {
+                print("Blocked");
+            }
         }
     }
 }

@@ -6,10 +6,7 @@ public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] float waitTime = 1f;
 
-    
-    Waypoint startWaypoint;
     Waypoint endWaypoint;
-    Waypoint currentWaypoint;
 
     Pathfinder pathfinder;
 
@@ -17,8 +14,6 @@ public class EnemyMovement : MonoBehaviour
     void Start()
     {
         pathfinder = FindObjectOfType<Pathfinder>();
-        startWaypoint = pathfinder.GetStartWaypoint();
-        currentWaypoint = startWaypoint;
         endWaypoint = pathfinder.GetEndWaypoint();
         StartCoroutine(FollowPath(waitTime));
     }
