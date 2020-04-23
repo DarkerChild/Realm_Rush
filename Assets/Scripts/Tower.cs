@@ -6,6 +6,8 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class Tower : MonoBehaviour
 {
+    public Waypoint currentWaypoint;
+
     [SerializeField] float targetDistance = 30f;
     [SerializeField] float towerAimSpeed = 5f;
 
@@ -13,6 +15,7 @@ public class Tower : MonoBehaviour
     float distToClosestEnemy;
     Transform targetEnemy;
     Transform objectToPan;
+    
 
     private void Start()
     {

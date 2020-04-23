@@ -36,18 +36,18 @@ public class Waypoint : MonoBehaviour
         return gridSize;
     }
 
+    public Vector3 GetTowerSpawnPosition()
+    {
+        return towerSpawnPosition;
+    }
+
     private void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(0))
         {
             if (isPlaceable)
             {
-                Instantiate(tower1, towerSpawnPosition, Quaternion.identity,towerController.transform);
-                isPlaceable = false;
-            }
-            else
-            {
-                print("Blocked");
+                towerController.PlaceTowerHere(this);
             }
         }
     }
