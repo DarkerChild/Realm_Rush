@@ -15,6 +15,35 @@ public class TowersController : MonoBehaviour
         towerQueue = new Queue<Tower>(maxTowers);
     }
 
+    private void Update()
+    {
+        CheckTowerPlacement();
+    }
+
+    private void CheckTowerPlacement()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = FindObjectOfType<Camera>().ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                Waypoint targetWaypoint = hit.transform.GetComponent<Waypoint>();
+
+                if (targetWaypoint != null)
+                {
+                    print("Waypoint = " + targetWaypoint.name);
+                    print("Placeable = " + targetWaypoint.isPlaceable);
+                    if (targetWaypoint.isPlaceable)
+                    {
+                        PlaceTowerHere(targetWaypoint);
+                    }
+                }
+            }
+        }
+    }
+
     public Tower GetTower1()
     {
         return tower1;
@@ -23,8 +52,6 @@ public class TowersController : MonoBehaviour
     public void PlaceTowerHere(Waypoint waypoint)
     {
         waypoint.isPlaceable = false;
-        print("Current Queue Size = " + towerQueue.Count);
-        print("Max Towers = " + maxTowers);
 
         if (towerQueue.Count == maxTowers)
         {
