@@ -58,6 +58,7 @@ public class TowersController : MonoBehaviour
             Tower currentTower = towerQueue.Dequeue();
             currentTower.currentWaypoint.isPlaceable=true;
             currentTower.transform.position = waypoint.GetTowerSpawnPosition();
+            currentTower.currentWaypoint = waypoint;
             towerQueue.Enqueue(currentTower);
         }
         else
