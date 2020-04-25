@@ -10,14 +10,14 @@ public class EnemySpawner : MonoBehaviour
     [Range(0.1f, 120f)] [SerializeField] float timeBetweenWaves = 3f;
     [SerializeField] int noOfEnemies = 5;
     [Range(0, 1)] float moveWaitRatio = 0.8f;
-    [SerializeField] int damagePerSot = 10;
+    [SerializeField] float damagePerSot = 10;
 
     Pathfinder pathfinder;
     Waypoint startWaypoint;
 
     Text waveIndicator;
 
-    int enemyHealth = 100;
+    float enemyHealth = 100;
     int wave = 1;
     
     void Start()
@@ -59,7 +59,7 @@ public class EnemySpawner : MonoBehaviour
     private void MoveToNextWave()
     {
         timeBetweenSpawns *= 0.9f;
-        enemyHealth += 10;
+        enemyHealth *= 1.1f;
         wave += 1;
         noOfEnemies += 1;
     }

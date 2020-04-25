@@ -58,7 +58,6 @@ public class PlayerStats : MonoBehaviour
 
     public void AddScore(int additionalScore)
     {
-        print("Additional score recieved of " + additionalScore + "points.");
         score += additionalScore;
         UpdateScoreBoard();
     }
@@ -68,15 +67,15 @@ public class PlayerStats : MonoBehaviour
         if (score >=100)
         {
             score -= 100;
-            UpdateScoreBoard();
             maxTowers += 1;
+            UpdateScoreBoard();
             SetMaxTowers();
         }
     }
 
     public void UpgradeTowers()
     {
-        if(score>200)
+        if(score>=200)
         {
             score -= 200;
             UpdateScoreBoard();

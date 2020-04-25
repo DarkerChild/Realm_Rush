@@ -23,7 +23,6 @@ public class FriendlyBase : MonoBehaviour
     public void DamageFriendlyBase(float damage)
     {
         baseCurrentHealth -= damage;
-        print(baseCurrentHealth);
         UpdateHealthBar();
         if (baseCurrentHealth<=0)
         {
@@ -64,7 +63,9 @@ public class FriendlyBase : MonoBehaviour
         Array.Reverse(allEnemies);
         foreach (EnemyCombat enemy in allEnemies)
         {
+            enemy.StopAllCoroutines();
             StartCoroutine(enemy.DeathSequence(objectNumber));
+            enemy.GetComponent<EnemyMovement>().enabled = false;
             objectNumber += 1;
         }
         while (allTowers.Length!=0 || allEnemies.Length!=0)
@@ -75,13 +76,8 @@ public class FriendlyBase : MonoBehaviour
         }
         yield return new WaitForSeconds(1f);
         StartCoroutine(playerStats.SetGameOver());
-        Destroy(gameObject);
-    }
-
-
-    private void OnDestroy()
-    {
-        GameObject deathFX = Instantiate(deathFXtemplate, transform.position + Vector3.up*15f, Quaternion.identity);
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
+        GameObject deathFX = Instantiate(deathFXtemplate, transform.position + Vector3.up * 15f, Quaternion.identity);
         var FXduration = deathFX.GetComponent<ParticleSystem>().main.startLifetime.constantMax;
         Destroy(deathFX, FXduration);
     }

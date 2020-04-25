@@ -20,6 +20,10 @@ public class Tower : MonoBehaviour
     Transform objectToPan;
 
     GameObject deathFXtemplate;
+    Pathfinder pathfinder;
+
+    Vector3 startWaypointPosition;
+
 
     bool isDying = false;
     
@@ -27,6 +31,8 @@ public class Tower : MonoBehaviour
     private void Start()
     {
         objectToPan = GetComponentInChildren<ParticleSystem>().transform.parent;
+        pathfinder = FindObjectOfType<Pathfinder>();
+        startWaypointPosition = pathfinder.GetStartWaypoint().transform.position + Vector3.up * 5f;
     }
 
     void LateUpdate()
@@ -38,7 +44,7 @@ public class Tower : MonoBehaviour
         }
         else
         {
-            ResetAim();
+            AimTurret(objectToPan.position + Vector3.forward, false);
         }
 
     }
@@ -65,19 +71,27 @@ public class Tower : MonoBehaviour
             float distance = Vector3.Distance(objectToPan.position, targetEnemy.position);
             if (distance <= targetDistance)
             {
-                AimAtEnemy();
+                AimTurret(targetEnemy.position, true);
             }
             else
             {
-                ResetAim();
+                AimTurret(startWaypointPosition, false);
             }
         }
         else
         {
-            ResetAim();
+            AimTurret(startWaypointPosition, false);
         }
     }
 
+    private void AimTurret(Vector3 targetPosition, bool target)
+    {
+        hasTarget = target;
+        Vector3 direction = targetPosition - objectToPan.position;
+        Quaternion toRotation = Quaternion.LookRotation(direction);
+        objectToPan.rotation = Quaternion.Lerp(objectToPan.rotation, toRotation, Time.deltaTime * towerAimSpeed);
+    }
+    /*
     private void ResetAim()
     {
         hasTarget = false;
@@ -91,6 +105,7 @@ public class Tower : MonoBehaviour
         Quaternion toRotation = Quaternion.LookRotation(direction);
         objectToPan.rotation = Quaternion.Lerp(objectToPan.rotation, toRotation, Time.deltaTime * towerAimSpeed);
     }
+    */
 
     public bool HasTarget()
     {

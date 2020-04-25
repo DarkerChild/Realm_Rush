@@ -14,7 +14,7 @@ public class EnemyCombat : MonoBehaviour
 
     float maxHealth;
     float currentHealth;
-    int damagePerShot;
+    float damagePerShot;
 
     PlayerStats playerStats;
     Slider healthSlider;
@@ -84,7 +84,7 @@ public class EnemyCombat : MonoBehaviour
         }
     }
 
-    public void SetEnemyVariables(int newMaxHealth, int newDamagePerShot)
+    public void SetEnemyVariables(float newMaxHealth, float newDamagePerShot)
     {
         currentHealth = newMaxHealth;
         maxHealth = newMaxHealth;
