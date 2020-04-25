@@ -53,7 +53,7 @@ public class Pathfinder : MonoBehaviour
             SetAsPath(nextWaypoint);
             nextWaypoint = nextWaypoint.exploredFrom;
         }
-        SetAsPath(startWaypoint);
+        //SetAsPath(startWaypoint);
         path.Reverse();
     }
 

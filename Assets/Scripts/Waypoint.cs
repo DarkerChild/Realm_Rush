@@ -40,16 +40,4 @@ public class Waypoint : MonoBehaviour
     {
         return towerSpawnPosition;
     }
-    /*
-    private void OnMouseDown()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (isPlaceable)
-            {
-                towerController.PlaceTowerHere(this);
-            }
-        }
-    }
-    */
 }

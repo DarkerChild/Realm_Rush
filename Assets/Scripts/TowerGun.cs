@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class TowerGun : MonoBehaviour
 {
-    [SerializeField] int damagePerShot = 20;
-    //[SerializeField] float shotTime = 0.3f;
-
-    ParticleSystem.EmissionModule emmision;
+    ParticleSystem.EmissionModule emission;
     Tower tower = null;
 
     private bool hasTarget = false;
@@ -16,18 +13,19 @@ public class TowerGun : MonoBehaviour
     {
         tower = GetComponent<Tower>();
         ParticleSystem particleSystem = gameObject.GetComponentInChildren<ParticleSystem>();
-        emmision = particleSystem.emission;
+        emission = particleSystem.emission;
+        emission.rateOverTime = tower.shotsPerSecond;
     }
 
     private void Update()
     {
         hasTarget = tower.HasTarget();
-        emmision.enabled = hasTarget;
+        emission.enabled = hasTarget;
     }
 
-    public int GetDamage()
+    public float GetDamage()
     {
-        return damagePerShot;
+        return tower.damagePerShot;
     }
 
     public void SetRotation(Quaternion toRotation)

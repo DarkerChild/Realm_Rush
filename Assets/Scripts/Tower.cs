@@ -2,19 +2,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [ExecuteInEditMode]
 public class Tower : MonoBehaviour
 {
     public Waypoint currentWaypoint;
 
-    [SerializeField] float targetDistance = 30f;
-    [SerializeField] float towerAimSpeed = 5f;
+    public float targetDistance = 30f;
+    public float towerAimSpeed = 5f;
+    public float damagePerShot = 10;
+    public float shotsPerSecond = 5f;
 
     private bool hasTarget;
     float distToClosestEnemy;
     Transform targetEnemy;
     Transform objectToPan;
+
+    GameObject deathFXtemplate;
+
+    bool isDying = false;
     
 
     private void Start()
@@ -24,8 +31,16 @@ public class Tower : MonoBehaviour
 
     void LateUpdate()
     {
-        FindClosestEnemy();
-        TargetEnemy();
+        if (!isDying)
+        {
+            FindClosestEnemy();
+            TargetEnemy();
+        }
+        else
+        {
+            ResetAim();
+        }
+
     }
 
     private void FindClosestEnemy()
@@ -80,5 +95,34 @@ public class Tower : MonoBehaviour
     public bool HasTarget()
     {
         return hasTarget;
+    }
+
+    public void SetDeathFX(GameObject deathFX)
+    {
+        deathFXtemplate = deathFX;
+    }
+
+    public IEnumerator DeathSequence(int objectNumber)
+    {
+        isDying = true;
+        Text deathTimerText = GetComponentInChildren<Text>();
+        yield return new WaitForSeconds(objectNumber / 10f);
+        deathTimerText.text = "3";
+        deathTimerText.enabled = true;
+        yield return new WaitForSeconds(1f);
+        deathTimerText.text = "2";
+        yield return new WaitForSeconds(1f);
+        deathTimerText.text = "1";
+        yield return new WaitForSeconds(1f);
+        deathTimerText.text = "0";
+        yield return new WaitForSeconds(1f);
+        Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        GameObject deathFX = Instantiate(deathFXtemplate, transform.position + new Vector3(0f, 4f, 0f), Quaternion.identity);
+        var FXduration = deathFX.GetComponent<ParticleSystem>().main.startLifetime.constantMax;
+        Destroy(deathFX, FXduration);
     }
 }

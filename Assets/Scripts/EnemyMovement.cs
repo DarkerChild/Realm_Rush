@@ -4,31 +4,85 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField] float waitTime = 1f;
+    float moveTime;
+    float waitTime;
 
+    Waypoint currentWaypoint;
+    Waypoint nextWaypoint;
     Waypoint endWaypoint;
 
     Pathfinder pathfinder;
+
+    bool needsToMove = false;
 
 
     void Start()
     {
         pathfinder = FindObjectOfType<Pathfinder>();
+        currentWaypoint = pathfinder.GetStartWaypoint();
+        nextWaypoint = currentWaypoint;
         endWaypoint = pathfinder.GetEndWaypoint();
-        StartCoroutine(FollowPath(waitTime));
+        StartCoroutine(FollowPath());
     }
 
-    IEnumerator FollowPath(float waitTime)
+    private void Update()
     {
-        while (transform.position != endWaypoint.transform.position)
+        MoveToNextWaypoint();
+    }
+
+    IEnumerator FollowPath()
+    {
+        while (currentWaypoint != endWaypoint)
         {
             List<Waypoint> path = pathfinder.GetPath();
 
-            foreach (Waypoint nextWaypoint in path)
+            foreach (Waypoint waypoint in path)
             {
-                yield return new WaitForSeconds(waitTime);
-                transform.position = nextWaypoint.transform.position;
+                nextWaypoint = waypoint;
+                needsToMove = true;
+                yield return new WaitForSeconds(waitTime+moveTime);
+                currentWaypoint = waypoint;
+               
             }
+        }
+        GetComponent<EnemyCombat>().StartDamagingEnemyBase();
+    }
+
+    private void MoveToNextWaypoint()
+    {
+        if (needsToMove)
+        {
+            needsToMove = false;
+            StartCoroutine(MoveToNextWaypoint(currentWaypoint, nextWaypoint, moveTime));
+        }
+    }
+
+    IEnumerator MoveToNextWaypoint(Waypoint old, Waypoint next, float duration)
+    {
+        for (float t = 0f; t < duration; t +=Time.deltaTime)
+        {
+            transform.position = Vector3.Lerp(
+                old.transform.position,
+                next.transform.position,
+                t / duration
+                );
+            yield return 0;
+        }
+        transform.position = next.transform.position;
+        currentWaypoint = next;
+    }
+
+    public void SetEnemyVariables(float spawnTime, float moveWaitRatio)
+    {
+        if (spawnTime > 2f)
+        {
+            moveTime = spawnTime * moveWaitRatio;
+            waitTime = spawnTime * (1 - moveWaitRatio);
+        }
+        else
+        {
+            moveTime = spawnTime;
+            waitTime = 0f;
         }
     }
 }
