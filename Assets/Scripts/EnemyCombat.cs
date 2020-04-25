@@ -65,7 +65,6 @@ public class EnemyCombat : MonoBehaviour
 
     private void UpdateScore()
     {
-        print("Enemy died and gave " + pointsValue + "points.");
         playerStats.AddScore(pointsValue);
     }
 
