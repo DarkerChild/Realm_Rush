@@ -6,8 +6,8 @@ using UnityEngine;
 public class TowersController : MonoBehaviour
 {
     [SerializeField] Tower tower1 = null;
-    [SerializeField] float damagePerShot = 10f;
-    [SerializeField] float shotsPerSecond = 5f;
+    public float damagePerShot = 10f;
+    public float shotsPerSecond = 5f;
     [SerializeField] float targetDistance = 30f;
     [SerializeField] float towerAimSpeed = 5f;
 
