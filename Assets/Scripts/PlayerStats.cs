@@ -29,6 +29,7 @@ public class PlayerStats : MonoBehaviour
     GameObject towerUpgrade;
 
     TowersController towerController;
+    SaveScript saveScript;
 
     private void Start()
     {
@@ -60,6 +61,7 @@ public class PlayerStats : MonoBehaviour
         towerController = FindObjectOfType<TowersController>();
         buyTower = GameObject.Find("Buy Tower Button");
         towerUpgrade = GameObject.Find("Upgrade Tower Button");
+        saveScript = FindObjectOfType<SaveScript>();
     }
 
     private void UpdateScoreBoard()
@@ -136,8 +138,9 @@ public class PlayerStats : MonoBehaviour
     {
         while (true)
         {
+            saveScript.SetFinalScore(currentPoints);
             yield return new WaitForSeconds(2f);
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(2);
         }
     }
 }

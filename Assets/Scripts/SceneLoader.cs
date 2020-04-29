@@ -5,27 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    [SerializeField] float LevelLoadDelayTime = 2f;
+    [SerializeField] float LevelLoadDelayTime = 1f;
 
-    private void Update()
+    public void LoadScene(int scene)
     {
-        CheckSpacePressed();
+         StartCoroutine(LoadGame(scene, LevelLoadDelayTime));
     }
 
-    private void CheckSpacePressed()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            StartCoroutine(LoadNextLevel(LevelLoadDelayTime));
-        }
-    }
-
-    IEnumerator LoadNextLevel(float delay)
+    IEnumerator LoadGame(int scene, float delay)
     {
         while (true)
         {
             yield return new WaitForSeconds(delay);
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(scene);
         }
     }
 }

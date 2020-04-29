@@ -5,16 +5,16 @@ using UnityEngine.UI;
 
 public class TextFader : MonoBehaviour
 {
-    [SerializeField] float cycleTime = 2f;
+    [SerializeField] float cycleTime = 1f;
     [Range(0.1f, 5f)] float movementFactor;
 
-    Text startText;
+    CanvasGroup canvasGroup;
 
     const float tau = Mathf.PI * 2; //About 6.28
 
     private void Start()
     {
-        startText = GameObject.Find("Press Space").GetComponent<Text>();
+        canvasGroup = GetComponent<CanvasGroup>();
     }
 
     private void Update()
@@ -23,10 +23,6 @@ public class TextFader : MonoBehaviour
         float rawSinWave = Mathf.Sin(cycles * tau);
         movementFactor = (rawSinWave / 2) + 0.5f;
 
-        Color newColor = startText.color;
-        newColor.a = movementFactor;
-
-        startText.material.color = newColor;
-
+        canvasGroup.alpha = movementFactor;
     }
 }

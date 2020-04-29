@@ -47,10 +47,38 @@ public class FriendlyBase : MonoBehaviour
 
     IEnumerator LevelLost()
     {
+        DestroyBase();
+
+        Tower[] allTowers = FindObjectsOfType<Tower>();
+        EnemyCombat[] allEnemies = FindObjectsOfType<EnemyCombat>();
+
+        DestroyAllTowersAndenemies(allTowers, allEnemies);
+
+        while (allTowers.Length != 0 || allEnemies.Length != 0)
+        {
+            allTowers = FindObjectsOfType<Tower>();
+            allEnemies = FindObjectsOfType<EnemyCombat>();
+            yield return 0;
+        }
+
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(playerStats.SetGameOver());
+
+    }
+
+    private void DestroyBase()
+    {
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
+        GameObject deathFX = Instantiate(deathFXtemplate, transform.position + Vector3.up * 15f, Quaternion.identity);
+        var FXduration = deathFX.GetComponent<ParticleSystem>().main.startLifetime.constantMax;
+        Destroy(deathFX, FXduration);
+    }
+
+    private void DestroyAllTowersAndenemies(Tower[] allTowers, EnemyCombat[] allEnemies)
+    {
         int objectNumber = 0;
         FindObjectOfType<EnemySpawner>().StopAllCoroutines(); //Stop spawning new enemies
 
-        Tower[] allTowers = FindObjectsOfType<Tower>();
         Array.Reverse(allTowers);
         foreach (Tower tower in allTowers)
         {
@@ -58,8 +86,6 @@ public class FriendlyBase : MonoBehaviour
             StartCoroutine(tower.DeathSequence(objectNumber));
             objectNumber += 1;
         }
-
-        EnemyCombat[] allEnemies = FindObjectsOfType<EnemyCombat>();
         Array.Reverse(allEnemies);
         foreach (EnemyCombat enemy in allEnemies)
         {
@@ -68,17 +94,5 @@ public class FriendlyBase : MonoBehaviour
             enemy.GetComponent<EnemyMovement>().enabled = false;
             objectNumber += 1;
         }
-        while (allTowers.Length!=0 || allEnemies.Length!=0)
-        {
-            allTowers = FindObjectsOfType<Tower>();
-            allEnemies = FindObjectsOfType<EnemyCombat>();
-            yield return 0;
-        }
-        yield return new WaitForSeconds(1f);
-        StartCoroutine(playerStats.SetGameOver());
-        gameObject.GetComponent<MeshRenderer>().enabled = false;
-        GameObject deathFX = Instantiate(deathFXtemplate, transform.position + Vector3.up * 15f, Quaternion.identity);
-        var FXduration = deathFX.GetComponent<ParticleSystem>().main.startLifetime.constantMax;
-        Destroy(deathFX, FXduration);
     }
 }
