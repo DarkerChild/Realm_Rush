@@ -2,18 +2,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class SaveScript : MonoBehaviour
+public class GameController : MonoBehaviour
 {
+    [SerializeField] float LevelLoadDelayTime = 1f;
+
+    int numGameControllers;
+
     public int finalScore = 0;
     public string finalDate = "01/01/2019";
 
     public int[] scores;
     public string[] dates;
 
-    private void Start()
+    public enum difficulty { Easy , Medium, Hard};
+    public difficulty currentDifficulty = difficulty.Easy;
+
+    private void Awake()
     {
-        CheckUnique();
+        int numGameControllers = FindObjectsOfType<GameController>().Length;        //if more than music player in scene the ndestroy ourselves
+        if (numGameControllers > 1)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
         scores = new int[6];
         dates = new string[6];
         GetSaveData();
@@ -48,19 +68,6 @@ public class SaveScript : MonoBehaviour
         dates[5] = finalDate;
     }
 
-    private void CheckUnique()
-    {
-        SaveScript[] saveScripts = FindObjectsOfType<SaveScript>();
-        if (saveScripts.Length > 1)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            DontDestroyOnLoad(gameObject);
-        }
-    }
-
     public void SetFinalScore(int gameFinalScore)
     {
         finalScore = gameFinalScore;
@@ -82,5 +89,19 @@ public class SaveScript : MonoBehaviour
         PlayerPrefs.SetString("highScoreDate3", dates[2]);
         PlayerPrefs.SetString("highScoreDate4", dates[3]);
         PlayerPrefs.SetString("highScoreDate5", dates[4]);
+    }
+
+    public void LoadScene(int scene)
+    {
+        StartCoroutine(LoadSceneCoroutine(scene));
+    }
+
+    IEnumerator LoadSceneCoroutine(int scene)
+    {
+        while (SceneManager.GetActiveScene().buildIndex != scene)
+        {
+            yield return new WaitForSeconds(LevelLoadDelayTime);
+            SceneManager.LoadScene(scene);
+        }
     }
 }

@@ -16,12 +16,12 @@ public class TowersController : MonoBehaviour
     Queue<Tower> towerQueue;
     int maxTowers;
 
-    PlayerStats playerStats;
+    LevelStats playerStats;
 
     void Start()
     {
         towerQueue = new Queue<Tower>(maxTowers);
-        playerStats = FindObjectOfType<PlayerStats>();
+        playerStats = FindObjectOfType<LevelStats>();
     }
 
     private void Update()

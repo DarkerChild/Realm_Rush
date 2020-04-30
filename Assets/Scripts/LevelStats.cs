@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class PlayerStats : MonoBehaviour
+public class LevelStats : MonoBehaviour
 {
     public int maxTowers = 1;
     public int currTowers = 0;
@@ -41,7 +41,7 @@ public class PlayerStats : MonoBehaviour
 
     private void CheckUnique()
     {
-        PlayerStats[] playerStats = FindObjectsOfType<PlayerStats>();
+        LevelStats[] playerStats = FindObjectsOfType<LevelStats>();
         if (playerStats.Length > 1)
         {
             Destroy(gameObject);

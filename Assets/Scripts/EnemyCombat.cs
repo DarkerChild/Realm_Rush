@@ -16,13 +16,13 @@ public class EnemyCombat : MonoBehaviour
     float currentHealth;
     float damagePerShot;
 
-    PlayerStats playerStats;
+    LevelStats playerStats;
     Slider healthSlider;
     
 
     void Start()
     {
-        playerStats = FindObjectOfType<PlayerStats>();
+        playerStats = FindObjectOfType<LevelStats>();
         healthSlider = GetComponentInChildren<Slider>();
         UpdateHealthBar();
     }

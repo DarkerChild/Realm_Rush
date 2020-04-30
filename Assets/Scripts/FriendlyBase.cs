@@ -12,9 +12,8 @@ public class FriendlyBase : MonoBehaviour
     Slider healthSlider;
     float baseCurrentHealth;
 
-    public PlayerStats playerStats;
-    public SceneLoader sceneLoader;
-    public SaveScript saveScript;
+    public LevelStats playerStats;
+    public GameController gamecontroller;
 
     bool isDead = false;
 
@@ -22,9 +21,8 @@ public class FriendlyBase : MonoBehaviour
     {
         baseCurrentHealth = baseStartingHealth;
         healthSlider = GetComponentInChildren<Slider>();
-        sceneLoader = FindObjectOfType<SceneLoader>();
-        playerStats = FindObjectOfType<PlayerStats>();
-        saveScript = FindObjectOfType<SaveScript>();
+        playerStats = FindObjectOfType<LevelStats>();
+        gamecontroller = FindObjectOfType<GameController>();
     }
     public void DamageFriendlyBase(float damage)
     {
@@ -47,7 +45,7 @@ public class FriendlyBase : MonoBehaviour
         if (!isDead)
         {
             isDead = true;
-            saveScript.SetFinalScore(playerStats.currentPoints);
+            gamecontroller.SetFinalScore(playerStats.currentPoints);
             Time.timeScale = 1f;
             DestroyBase();
 
@@ -64,7 +62,7 @@ public class FriendlyBase : MonoBehaviour
             }
 
             yield return new WaitForSeconds(1f);
-            sceneLoader.LoadScene(2);
+            gamecontroller.LoadScene(2);
         }
     }
 

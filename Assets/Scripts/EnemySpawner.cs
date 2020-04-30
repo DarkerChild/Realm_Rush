@@ -8,24 +8,63 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] EnemyMovement enemy1 = null;
     [Range(0.1f,120f)] [SerializeField] float timeBetweenSpawns = 1f;
     [Range(0.1f, 120f)] [SerializeField] float timeBetweenWaves = 3f;
-    [SerializeField] int noOfEnemies = 5;
     [Range(0, 1)] float moveWaitRatio = 0.8f;
-    [SerializeField] float damagePerSot = 10;
+    [SerializeField] int easyWaveSizeIncreaseChance = 30;
+    [SerializeField] int mediumWaveSizeIncreaseChance = 60;
+    [SerializeField] int hardWaveSizeIncreaseChance = 80;
+    [SerializeField] float easyHealthIncreasePerWave = 3f;
+    [SerializeField] float mediumHealthIncreasePerWave = 6f;
+    [SerializeField] float hardHealthIncreasePerWave = 10f;
 
     Pathfinder pathfinder;
     Waypoint startWaypoint;
 
     Text waveIndicator;
 
-    float enemyHealth = 100;
-    int wave = 1;
+    GameController gameController;
     
+    int noOfEnemies = 5;
+    float enemyHealth = 100;
+    float damagePerSot = 10;
+    float waveHealthIncrement;
+    float chanceWavesizeIncrease;
+    int wave = 1;
+
+    GameController.difficulty currentDifficulty;
+
     void Start()
+    {
+        GetRelatedObjects();
+        SetDifficultyVariables();
+        StartCoroutine(SpawnEnemies());
+    }
+
+    private void GetRelatedObjects()
     {
         pathfinder = FindObjectOfType<Pathfinder>();
         startWaypoint = pathfinder.GetStartWaypoint();
         waveIndicator = GameObject.Find("Wave Indicator").GetComponent<Text>();
-        StartCoroutine(SpawnEnemies());
+        gameController = FindObjectOfType<GameController>();
+    }
+
+    private void SetDifficultyVariables()
+    {
+        currentDifficulty = gameController.currentDifficulty;
+        switch (currentDifficulty)
+        {
+            case GameController.difficulty.Easy:
+                waveHealthIncrement = (100f + easyHealthIncreasePerWave) / 100f;
+                chanceWavesizeIncrease = easyWaveSizeIncreaseChance;
+                break;
+            case GameController.difficulty.Medium:
+                waveHealthIncrement = (100f + mediumHealthIncreasePerWave) / 100f;
+                chanceWavesizeIncrease = mediumWaveSizeIncreaseChance;
+                break;
+            case GameController.difficulty.Hard:
+                waveHealthIncrement = (100f + hardHealthIncreasePerWave) / 100f;
+                chanceWavesizeIncrease = hardWaveSizeIncreaseChance;
+                break;
+        }
     }
 
     IEnumerator SpawnEnemies()
@@ -59,8 +98,16 @@ public class EnemySpawner : MonoBehaviour
     private void MoveToNextWave()
     {
         timeBetweenSpawns *= 0.9f;
-        enemyHealth *= 1.1f;
+        enemyHealth *= waveHealthIncrement;
+
+        System.Random rand = new System.Random();
+        int chance = rand.Next(101);
+        print(chance.ToString());
+        if (chance < chanceWavesizeIncrease)
+        {
+            print("Wave Increased");
+            noOfEnemies += 1;
+        }
         wave += 1;
-        noOfEnemies += 1;
     }
 }
