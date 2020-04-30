@@ -18,7 +18,7 @@ public class Waypoint : MonoBehaviour
 
     private void Start()
     {
-        towerSpawnPosition = transform.position + (Vector3.up * 2);
+        towerSpawnPosition = transform.position;
         towerController = FindObjectOfType<TowersController>();
         tower1 = towerController.GetTower1();
     }

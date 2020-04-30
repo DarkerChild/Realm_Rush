@@ -890,10 +890,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tower1: {fileID: 2074757060331724828, guid: f537d6f9b6d906940bc770a50f3943e8, type: 3}
-  damagePerShot: 10
-  shotsPerSecond: 3
+  damagePerShot: 8
+  shotsPerSecond: 2.5
   targetDistance: 30
   towerAimSpeed: 5
+  projectileSpeed: 100
   deathFX: {fileID: 6113106214523635817, guid: a4d3976a38142ad4e8aec8830803e03a, type: 3}
 --- !u!4 &176866677 stripped
 Transform:
@@ -1765,8 +1766,8 @@ RectTransform:
   - {fileID: 390680776}
   - {fileID: 1289976952}
   - {fileID: 1251175451}
-  - {fileID: 1652372441}
   - {fileID: 1717223196}
+  - {fileID: 1652372441}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4171,7 +4172,7 @@ GameObject:
   - component: {fileID: 1086759139}
   - component: {fileID: 1086759138}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Upgrade Tower Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4834,7 +4835,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 110, y: 79.6}
+  m_AnchoredPosition: {x: 110, y: 79.6001}
   m_SizeDelta: {x: 400, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1251175452
@@ -5756,7 +5757,7 @@ GameObject:
   - component: {fileID: 1487747672}
   - component: {fileID: 1487747671}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Buy Tower Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6367,7 +6368,7 @@ RectTransform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 398822694}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6555,7 +6556,7 @@ RectTransform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 398822694}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -8434,17 +8435,17 @@ PrefabInstance:
     - target: {fileID: 3696422427754442729, guid: ace7fcd0410d28a4f9952b65497cd948,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -34.853077
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3696422427754442729, guid: ace7fcd0410d28a4f9952b65497cd948,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -220.97702
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3696422427754442729, guid: ace7fcd0410d28a4f9952b65497cd948,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 427.34372
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3696422427754442729, guid: ace7fcd0410d28a4f9952b65497cd948,
         type: 3}
@@ -8486,6 +8487,66 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3696422427754442730, guid: ace7fcd0410d28a4f9952b65497cd948,
+        type: 3}
+      propertyPath: currentPointsText
+      value: 
+      objectReference: {fileID: 1936538945}
+    - target: {fileID: 3696422427754442730, guid: ace7fcd0410d28a4f9952b65497cd948,
+        type: 3}
+      propertyPath: totalPointsText
+      value: 
+      objectReference: {fileID: 1023011560}
+    - target: {fileID: 3696422427754442730, guid: ace7fcd0410d28a4f9952b65497cd948,
+        type: 3}
+      propertyPath: towerNoText
+      value: 
+      objectReference: {fileID: 1643487801}
+    - target: {fileID: 3696422427754442730, guid: ace7fcd0410d28a4f9952b65497cd948,
+        type: 3}
+      propertyPath: towerLevelText
+      value: 
+      objectReference: {fileID: 1883857547}
+    - target: {fileID: 3696422427754442730, guid: ace7fcd0410d28a4f9952b65497cd948,
+        type: 3}
+      propertyPath: towerDamage
+      value: 
+      objectReference: {fileID: 1251175452}
+    - target: {fileID: 3696422427754442730, guid: ace7fcd0410d28a4f9952b65497cd948,
+        type: 3}
+      propertyPath: towerROF
+      value: 
+      objectReference: {fileID: 1717223197}
+    - target: {fileID: 3696422427754442730, guid: ace7fcd0410d28a4f9952b65497cd948,
+        type: 3}
+      propertyPath: towerDPS
+      value: 
+      objectReference: {fileID: 1652372442}
+    - target: {fileID: 3696422427754442730, guid: ace7fcd0410d28a4f9952b65497cd948,
+        type: 3}
+      propertyPath: buyTowerText
+      value: 
+      objectReference: {fileID: 1487747671}
+    - target: {fileID: 3696422427754442730, guid: ace7fcd0410d28a4f9952b65497cd948,
+        type: 3}
+      propertyPath: upgradeTowerText
+      value: 
+      objectReference: {fileID: 1086759138}
+    - target: {fileID: 3696422427754442730, guid: ace7fcd0410d28a4f9952b65497cd948,
+        type: 3}
+      propertyPath: buyTower
+      value: 
+      objectReference: {fileID: 788015781}
+    - target: {fileID: 3696422427754442730, guid: ace7fcd0410d28a4f9952b65497cd948,
+        type: 3}
+      propertyPath: towerUpgrade
+      value: 
+      objectReference: {fileID: 1926324321}
+    - target: {fileID: 3696422427754442730, guid: ace7fcd0410d28a4f9952b65497cd948,
+        type: 3}
+      propertyPath: towerController
+      value: 
+      objectReference: {fileID: 170793461}
     - target: {fileID: 3696422427754442731, guid: ace7fcd0410d28a4f9952b65497cd948,
         type: 3}
       propertyPath: m_Name

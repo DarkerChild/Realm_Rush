@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteInEditMode]
+
 public class Tower : MonoBehaviour
 {
     public Waypoint currentWaypoint;
@@ -13,26 +13,29 @@ public class Tower : MonoBehaviour
     public float towerAimSpeed = 5f;
     public float damagePerShot = 10;
     public float shotsPerSecond = 5f;
+    public float projectileSpeed = 100f;
 
     private bool hasTarget;
     float distToClosestEnemy;
     Transform targetEnemy;
-    Transform objectToPan;
+    
 
     GameObject deathFXtemplate;
     Pathfinder pathfinder;
+    public ParticleSystem particleSystem = null;
+    public Transform objectToPan = null;
 
     Vector3 startWaypointPosition;
 
 
     bool isDying = false;
     
-
     private void Start()
     {
-        objectToPan = GetComponentInChildren<ParticleSystem>().transform.parent;
+        objectToPan = particleSystem.transform.parent;
         pathfinder = FindObjectOfType<Pathfinder>();
         startWaypointPosition = pathfinder.GetStartWaypoint().transform.position + Vector3.up * 5f;
+        
     }
 
     void LateUpdate()
@@ -71,7 +74,7 @@ public class Tower : MonoBehaviour
             float distance = Vector3.Distance(objectToPan.position, targetEnemy.position);
             if (distance <= targetDistance)
             {
-                AimTurret(targetEnemy.position, true);
+                AimTurret(targetEnemy.position + Vector3.up*3f, true);
             }
             else
             {
@@ -89,23 +92,8 @@ public class Tower : MonoBehaviour
         hasTarget = target;
         Vector3 direction = targetPosition - objectToPan.position;
         Quaternion toRotation = Quaternion.LookRotation(direction);
-        objectToPan.rotation = Quaternion.Lerp(objectToPan.rotation, toRotation, Time.deltaTime * towerAimSpeed);
+        objectToPan.rotation = Quaternion.Slerp(objectToPan.rotation, toRotation, Time.deltaTime * towerAimSpeed);
     }
-    /*
-    private void ResetAim()
-    {
-        hasTarget = false;
-        objectToPan.rotation = Quaternion.Lerp(objectToPan.rotation, Quaternion.identity, Time.deltaTime * towerAimSpeed);
-    }
-
-    private void AimAtEnemy()
-    {
-        hasTarget = true;
-        Vector3 direction = targetEnemy.position - objectToPan.position;
-        Quaternion toRotation = Quaternion.LookRotation(direction);
-        objectToPan.rotation = Quaternion.Lerp(objectToPan.rotation, toRotation, Time.deltaTime * towerAimSpeed);
-    }
-    */
 
     public bool HasTarget()
     {
@@ -139,5 +127,12 @@ public class Tower : MonoBehaviour
         GameObject deathFX = Instantiate(deathFXtemplate, transform.position + new Vector3(0f, 4f, 0f), Quaternion.identity);
         var FXduration = deathFX.GetComponent<ParticleSystem>().main.startLifetime.constantMax;
         Destroy(deathFX, FXduration);
+    }
+
+    public void UpdateProjectileSpeed(float newProjectileSpeed)
+    {
+        projectileSpeed = newProjectileSpeed;
+        ParticleSystem.MainModule main = particleSystem.main;
+        main.startSpeed = projectileSpeed;
     }
 }

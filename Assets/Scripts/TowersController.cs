@@ -7,9 +7,10 @@ public class TowersController : MonoBehaviour
 {
     [SerializeField] Tower tower1 = null;
     public float damagePerShot = 10f;
-    public float shotsPerSecond = 5f;
-    [SerializeField] float targetDistance = 30f;
-    [SerializeField] float towerAimSpeed = 5f;
+    public float shotsPerSecond = 3f;
+    public float targetDistance = 30f;
+    public float towerAimSpeed = 5f;
+    public float projectileSpeed = 100f;
 
     [SerializeField] GameObject deathFX = null;
 
@@ -100,6 +101,7 @@ public class TowersController : MonoBehaviour
         newTower.shotsPerSecond = shotsPerSecond;
         newTower.targetDistance = targetDistance;
         newTower.towerAimSpeed = towerAimSpeed;
+        newTower.UpdateProjectileSpeed(projectileSpeed);
     }
 
     public void UpdateTowerCount(int newMaxTowers)
@@ -111,6 +113,13 @@ public class TowersController : MonoBehaviour
     {
         damagePerShot *= 1.1f;
         shotsPerSecond *= 1.1f;
-        towerAimSpeed *= 0.9f;
+        towerAimSpeed *= 1.1f;
+        projectileSpeed *= 1.2f;
+        targetDistance *= 1.2f;
+
+        foreach (Tower tower in towerQueue)
+        {
+            UpdateTowerStats(tower);
+        }
     }
 }

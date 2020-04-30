@@ -49,4 +49,16 @@ MonoBehaviour:
   currentPoints: 0
   totalPoints: 0
   towerBuyCost: 100
-  towerUpgradeCost: 200
+  towerUpgradeCost: 500
+  currentPointsText: {fileID: 0}
+  totalPointsText: {fileID: 0}
+  towerNoText: {fileID: 0}
+  towerLevelText: {fileID: 0}
+  towerDamage: {fileID: 0}
+  towerROF: {fileID: 0}
+  towerDPS: {fileID: 0}
+  buyTowerText: {fileID: 0}
+  upgradeTowerText: {fileID: 0}
+  buyTower: {fileID: 0}
+  towerUpgrade: {fileID: 0}
+  towerController: {fileID: 0}

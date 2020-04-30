@@ -14,30 +14,35 @@ public class LevelStats : MonoBehaviour
     public int currentPoints = 0;
     public int totalPoints = 0;
 
-    [SerializeField] int towerBuyCost = 100;
-    [SerializeField] int towerUpgradeCost = 200;
+    public int towerBuyCost = 100;
+    public int towerUpgradeCost = 200;
 
-    Text currentPointsText;
-    Text totalPointsText;
-    Text towerNoText;
-    Text towerLevelText;
-    Text towerDamage;
-    Text towerROF;
-    Text towerDPS;
+    [SerializeField] Text currentPointsText;
+    [SerializeField] Text totalPointsText;
+    [SerializeField] Text towerNoText;
+    [SerializeField] Text towerLevelText;
+    [SerializeField] Text towerDamage;
+    [SerializeField] Text towerROF;
+    [SerializeField] Text towerDPS;
 
-    GameObject buyTower;
-    GameObject towerUpgrade;
+    [SerializeField] Text buyTowerText;
+    [SerializeField] Text upgradeTowerText;
 
-    TowersController towerController;
+    [SerializeField] GameObject buyTower;
+    [SerializeField] GameObject towerUpgrade;
+
+    [SerializeField] TowersController towerController;
+    GameController gameController;
 
     private void Start()
     {
         CheckUnique();
-        GetRelatedObjects();
-        UpdateScoreBoard();
+        gameController = FindObjectOfType<GameController>();
+        SetDifficulty();
+        
+        UpdateUI();
         SetMaxTowers();
     }
-
 
     private void CheckUnique()
     {
@@ -48,22 +53,26 @@ public class LevelStats : MonoBehaviour
         }
     }
 
-    private void GetRelatedObjects()
+    private void SetDifficulty()
     {
-        currentPointsText = GameObject.Find("Current Points").GetComponent<Text>();
-        totalPointsText = GameObject.Find("Total Points").GetComponent<Text>();
-        towerNoText = GameObject.Find("No of towers").GetComponent<Text>();
-        towerLevelText = GameObject.Find("Tower Level").GetComponent<Text>();
-        towerDamage = GameObject.Find("Tower Damange").GetComponent<Text>();
-        towerROF = GameObject.Find("Tower ROF").GetComponent<Text>();
-        towerDPS = GameObject.Find("Tower DPS").GetComponent<Text>();
-        towerController = FindObjectOfType<TowersController>();
-        buyTower = GameObject.Find("Buy Tower Button");
-        towerUpgrade = GameObject.Find("Upgrade Tower Button");
-
+        switch (gameController.currentDifficulty)
+        {
+            case GameController.difficulty.Easy:
+                towerBuyCost = 70;
+                towerUpgradeCost = 200;
+                break;
+            case GameController.difficulty.Medium:
+                towerBuyCost = 85;
+                towerUpgradeCost = 300;
+                break;
+            case GameController.difficulty.Hard:
+                towerBuyCost = 100;
+                towerUpgradeCost = 400;
+                break;
+        }
     }
 
-    private void UpdateScoreBoard()
+    private void UpdateUI()
     {
         currentPointsText.text = currentPoints.ToString();
         totalPointsText.text = totalPoints.ToString();
@@ -72,6 +81,8 @@ public class LevelStats : MonoBehaviour
         towerDamage.text = "Damage : " + Mathf.FloorToInt(towerController.damagePerShot).ToString();
         towerROF.text = "ROF : " + Mathf.FloorToInt(towerController.shotsPerSecond).ToString();
         towerDPS.text = "DPS : " + Mathf.FloorToInt(towerController.damagePerShot* towerController.shotsPerSecond).ToString();
+        buyTowerText.text = "Buy Tower (" + towerBuyCost + ")";
+        upgradeTowerText.text = "Upgrade all Towers (" + towerUpgradeCost + ")";
         SetTowerButtonVisibility();
     }
 
@@ -108,14 +119,14 @@ public class LevelStats : MonoBehaviour
     {
         currentPoints += additionalScore;
         totalPoints += additionalScore;
-        UpdateScoreBoard();
+        UpdateUI();
     }
 
     public void BuyTower()
     {
         currentPoints -= 100;
         maxTowers += 1;
-        UpdateScoreBoard();
+        UpdateUI();
         SetMaxTowers();
     }
 
@@ -123,13 +134,13 @@ public class LevelStats : MonoBehaviour
     {
         currentPoints -= 200;
         towerLevel += 1;
-        UpdateScoreBoard();
+        UpdateUI();
         towerController.UpgradeTower();
     }
 
     public void NewTowerCreated()
     {
         currTowers += 1;
-        UpdateScoreBoard();
+        UpdateUI();
     }
 }
