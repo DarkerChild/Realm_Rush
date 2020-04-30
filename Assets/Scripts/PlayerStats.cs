@@ -29,7 +29,6 @@ public class PlayerStats : MonoBehaviour
     GameObject towerUpgrade;
 
     TowersController towerController;
-    SaveScript saveScript;
 
     private void Start()
     {
@@ -61,7 +60,7 @@ public class PlayerStats : MonoBehaviour
         towerController = FindObjectOfType<TowersController>();
         buyTower = GameObject.Find("Buy Tower Button");
         towerUpgrade = GameObject.Find("Upgrade Tower Button");
-        saveScript = FindObjectOfType<SaveScript>();
+
     }
 
     private void UpdateScoreBoard()
@@ -73,10 +72,10 @@ public class PlayerStats : MonoBehaviour
         towerDamage.text = "Damage : " + Mathf.FloorToInt(towerController.damagePerShot).ToString();
         towerROF.text = "ROF : " + Mathf.FloorToInt(towerController.shotsPerSecond).ToString();
         towerDPS.text = "DPS : " + Mathf.FloorToInt(towerController.damagePerShot* towerController.shotsPerSecond).ToString();
-        SetTowerButtons();
+        SetTowerButtonVisibility();
     }
 
-    private void SetTowerButtons()
+    private void SetTowerButtonVisibility()
     {
         if (currentPoints < towerBuyCost)
         {
@@ -132,15 +131,5 @@ public class PlayerStats : MonoBehaviour
     {
         currTowers += 1;
         UpdateScoreBoard();
-    }
-
-    public IEnumerator SetGameOver()
-    {
-        saveScript.SetFinalScore(currentPoints);
-        while (true)
-        {
-            yield return new WaitForSeconds(2f);
-            SceneManager.LoadScene(2);
-        }
     }
 }

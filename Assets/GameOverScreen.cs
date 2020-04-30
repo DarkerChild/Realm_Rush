@@ -20,14 +20,26 @@ public class GameOverScreen : MonoBehaviour
 
     SaveScript saveScript;
 
-    void Start()
+    bool isPopulated = false;
+
+    private void Start()
     {
         saveScript = FindObjectOfType<SaveScript>();
-        UpdateGameOverScreen();
+    }
+    void Update()
+    {
+        if (!isPopulated)
+        {
+            isPopulated = true;
+            UpdateGameOverScreen();
+        }
     }
 
     private void UpdateGameOverScreen()
     {
+        print(saveScript.name);
+        print(dateFinal.text);
+        print(saveScript.finalDate);
         date1.text = PlayerPrefs.GetString("highScoreDate1");
         date2.text = PlayerPrefs.GetString("highScoreDate2");
         date3.text = PlayerPrefs.GetString("highScoreDate3");

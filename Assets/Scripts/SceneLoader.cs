@@ -9,14 +9,14 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadScene(int scene)
     {
-         StartCoroutine(LoadGame(scene, LevelLoadDelayTime));
+        StartCoroutine(LoadSceneCoroutine(scene));
     }
 
-    IEnumerator LoadGame(int scene, float delay)
+    IEnumerator LoadSceneCoroutine(int scene)
     {
         while (true)
         {
-            yield return new WaitForSeconds(delay);
+            yield return new WaitForSeconds(LevelLoadDelayTime);
             SceneManager.LoadScene(scene);
         }
     }

@@ -12,7 +12,9 @@ public class FriendlyBase : MonoBehaviour
     Slider healthSlider;
     float baseCurrentHealth;
 
-    PlayerStats playerStats;
+    public PlayerStats playerStats;
+    public SceneLoader sceneLoader;
+    public SaveScript saveScript;
 
     bool isDead = false;
 
@@ -20,7 +22,9 @@ public class FriendlyBase : MonoBehaviour
     {
         baseCurrentHealth = baseStartingHealth;
         healthSlider = GetComponentInChildren<Slider>();
+        sceneLoader = FindObjectOfType<SceneLoader>();
         playerStats = FindObjectOfType<PlayerStats>();
+        saveScript = FindObjectOfType<SaveScript>();
     }
     public void DamageFriendlyBase(float damage)
     {
@@ -43,6 +47,7 @@ public class FriendlyBase : MonoBehaviour
         if (!isDead)
         {
             isDead = true;
+            saveScript.SetFinalScore(playerStats.currentPoints);
             Time.timeScale = 1f;
             DestroyBase();
 
@@ -59,13 +64,14 @@ public class FriendlyBase : MonoBehaviour
             }
 
             yield return new WaitForSeconds(1f);
-            StartCoroutine(playerStats.SetGameOver());
+            sceneLoader.LoadScene(2);
         }
     }
 
     private void DestroyBase()
     {
         gameObject.GetComponent<MeshRenderer>().enabled = false;
+        transform.Find("Canvas").gameObject.SetActive(false);
         GameObject deathFX = Instantiate(deathFXtemplate, transform.position + Vector3.up * 15f, Quaternion.identity);
         var FXduration = deathFX.GetComponent<ParticleSystem>().main.startLifetime.constantMax;
         Destroy(deathFX, FXduration);
