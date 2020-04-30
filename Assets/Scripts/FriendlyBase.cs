@@ -12,7 +12,7 @@ public class FriendlyBase : MonoBehaviour
     Slider healthSlider;
     float baseCurrentHealth;
 
-    public LevelStats playerStats;
+    public LevelStats levelStats;
     public GameController gamecontroller;
 
     bool isDead = false;
@@ -21,7 +21,7 @@ public class FriendlyBase : MonoBehaviour
     {
         baseCurrentHealth = baseStartingHealth;
         healthSlider = GetComponentInChildren<Slider>();
-        playerStats = FindObjectOfType<LevelStats>();
+        levelStats = FindObjectOfType<LevelStats>();
         gamecontroller = FindObjectOfType<GameController>();
     }
     public void DamageFriendlyBase(float damage)
@@ -45,7 +45,7 @@ public class FriendlyBase : MonoBehaviour
         if (!isDead)
         {
             isDead = true;
-            gamecontroller.SetFinalScore(playerStats.currentPoints);
+            gamecontroller.SetFinalScore(levelStats.totalPoints);
             Time.timeScale = 1f;
             DestroyBase();
 

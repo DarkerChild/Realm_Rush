@@ -96,6 +96,8 @@ MonoBehaviour:
   baseStartingHealth: 1000
   deathFXtemplate: {fileID: 6113106214523635817, guid: a4d3976a38142ad4e8aec8830803e03a,
     type: 3}
+  playerStats: {fileID: 0}
+  gamecontroller: {fileID: 0}
 --- !u!1 &1169350143362484099
 GameObject:
   m_ObjectHideFlags: 0

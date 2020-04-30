@@ -3566,16 +3566,6 @@ PrefabInstance:
       propertyPath: playerStats
       value: 
       objectReference: {fileID: 634631301}
-    - target: {fileID: 7728858075267798010, guid: a467c20795e0fed40b0d21d2bebe3b04,
-        type: 3}
-      propertyPath: saveScript
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7728858075267798010, guid: a467c20795e0fed40b0d21d2bebe3b04,
-        type: 3}
-      propertyPath: sceneLoader
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a467c20795e0fed40b0d21d2bebe3b04, type: 3}
 --- !u!4 &927441172 stripped

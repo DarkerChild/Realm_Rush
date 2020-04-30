@@ -49,6 +49,7 @@ MonoBehaviour:
   finalDate: 01/01/2019
   scores: 
   dates: []
+  currentDifficulty: 0
 --- !u!82 &5194111764277221419
 AudioSource:
   m_ObjectHideFlags: 0
@@ -63,7 +64,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 0.15
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
