@@ -14,6 +14,8 @@ public class FriendlyBase : MonoBehaviour
 
     PlayerStats playerStats;
 
+    bool isDead = false;
+
     private void Start()
     {
         baseCurrentHealth = baseStartingHealth;
@@ -26,7 +28,7 @@ public class FriendlyBase : MonoBehaviour
         UpdateHealthBar();
         if (baseCurrentHealth<=0)
         {
-            EndLevelOnLoss();
+            StartCoroutine(LevelLost());
         }
     }
 
@@ -35,35 +37,30 @@ public class FriendlyBase : MonoBehaviour
         healthSlider.value = baseCurrentHealth / baseStartingHealth;
     }
 
-    public float GetCurrentHealth()
-    {
-        return baseCurrentHealth;
-    }
-
-    private void EndLevelOnLoss()
-    {
-        StartCoroutine(LevelLost());
-    }
 
     IEnumerator LevelLost()
     {
-        DestroyBase();
-
-        Tower[] allTowers = FindObjectsOfType<Tower>();
-        EnemyCombat[] allEnemies = FindObjectsOfType<EnemyCombat>();
-
-        DestroyAllTowersAndenemies(allTowers, allEnemies);
-
-        while (allTowers.Length != 0 || allEnemies.Length != 0)
+        if (!isDead)
         {
-            allTowers = FindObjectsOfType<Tower>();
-            allEnemies = FindObjectsOfType<EnemyCombat>();
-            yield return 0;
+            isDead = true;
+            Time.timeScale = 1f;
+            DestroyBase();
+
+            Tower[] allTowers = FindObjectsOfType<Tower>();
+            EnemyCombat[] allEnemies = FindObjectsOfType<EnemyCombat>();
+
+            DestroyAllTowersAndenemies(allTowers, allEnemies);
+
+            while (allTowers.Length != 0 || allEnemies.Length != 0)
+            {
+                allTowers = FindObjectsOfType<Tower>();
+                allEnemies = FindObjectsOfType<EnemyCombat>();
+                yield return 0;
+            }
+
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(playerStats.SetGameOver());
         }
-
-        yield return new WaitForSeconds(1f);
-        StartCoroutine(playerStats.SetGameOver());
-
     }
 
     private void DestroyBase()
@@ -94,5 +91,10 @@ public class FriendlyBase : MonoBehaviour
             enemy.GetComponent<EnemyMovement>().enabled = false;
             objectNumber += 1;
         }
+    }
+
+    public float GetCurrentHealth()
+    {
+        return baseCurrentHealth;
     }
 }

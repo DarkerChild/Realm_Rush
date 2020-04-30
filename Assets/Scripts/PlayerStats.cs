@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStats : MonoBehaviour
 {
-    public int maxTowers = 2;
+    public int maxTowers = 1;
     public int currTowers = 0;
     public int towerLevel = 1;
     
@@ -136,9 +136,9 @@ public class PlayerStats : MonoBehaviour
 
     public IEnumerator SetGameOver()
     {
+        saveScript.SetFinalScore(currentPoints);
         while (true)
         {
-            saveScript.SetFinalScore(currentPoints);
             yield return new WaitForSeconds(2f);
             SceneManager.LoadScene(2);
         }

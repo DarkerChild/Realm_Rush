@@ -18,6 +18,8 @@ public class CameraController : MonoBehaviour
 
     [SerializeField] Vector3 zoomAmount = new Vector3(0f,-10f,10f);
 
+    [SerializeField] float timeMultiplier = 1.5f;
+
     Vector3 newPosition;
     Quaternion newRotation;
     Vector3 newZoom;
@@ -59,9 +61,24 @@ public class CameraController : MonoBehaviour
             HandleZoomInput();
             HandleMouseInput();
         }
+        CheckForSpeedBoost();
     }
 
-
+    private void CheckForSpeedBoost()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Time.timeScale = 1f;
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            Time.timeScale = timeMultiplier;
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Time.timeScale = timeMultiplier*2;
+        }
+    }
 
     private void HandleMovementInput()
     {
